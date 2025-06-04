@@ -66,8 +66,8 @@ systemctl restart sshd  >> /root/install.log
 
 echo "installing and configuring directslave"
 cd ~
-wget -q https://directslave.com/download/Latest.tar.gz >> /root/install.log
-tar -xf Latest.tar.gz
+wget -q https://directslave.com/download/directslave-3.4.3-advanced-all.tar.gz >> /root/install.log
+tar -xf directslave-3.4.3-advanced-all.tar.gz
 mv directslave /usr/local/
 cd /usr/local/directslave/bin
 mv directslave-linux-amd64 directslave
