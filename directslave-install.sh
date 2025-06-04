@@ -1,5 +1,5 @@
 #!/bin/sh
-# @author jordavin,phillcoxon,mantas15
+# @author ENGINYRING
 # @updated by Afrizal-id
 # @date 07.12.2019
 # @version 1.0.5
@@ -7,22 +7,26 @@
 # ------------------------------------------------------------------------------
 sshport=22;
 #Check that user is root.
-if [ “$(id -u)” = “0” ]; then
+if [ "$(id -u)" = "0" ]; then
 printf "Bingo! you are root. Continue on....\n"
   else
 printf "Sorry, This script must be run as root\n"
 exit;
 fi
-#What Distro are you on?
-printf "Distro are you on??\n" 2>&1
-OS='cat /etc/redhat-release | awk {'print $1}'
-if [ "$OS" = "CentOS" ]; then
-echo "System runs on CentOS 7.X. Checking Continue on....";
-VN='cat /etc/redhat-release | awk {'print $3}'
-else [ "$VN" != "7.*" ]; elseif
-echo "Installation failed. System runs on unsupported Linux. Exiting...";
-exit;
-fi 
+# Detect OS version (RHEL 8+ required)
+printf "Detecting operating system...\n" 2>&1
+if [ -f /etc/redhat-release ]; then
+    os_release=$(cat /etc/redhat-release)
+    if echo "$os_release" | grep -qE 'release ([89]|[1-9][0-9])'; then
+        echo "System runs on $os_release. Continuing..."
+    else
+        echo "Installation failed. System runs on unsupported Linux. Exiting..."
+        exit 1
+    fi
+else
+    echo "/etc/redhat-release not found. Unsupported system."
+    exit 1
+fi
 if [ -z "$1" ]; then
  echo "usage <username> <userpass> <master ip>";
  exit 0;
